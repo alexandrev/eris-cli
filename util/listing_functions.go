@@ -2,10 +2,41 @@ package util
 
 import (
 	"fmt"
+	"os"
+	"path"
 	"strings"
 
 	"github.com/eris-ltd/eris-cli/definitions"
+
+	//	"github.com/docker/machine/libmachine"
+	"github.com/docker/machine/libmachine/persist"
 )
+
+func ListMachines() error {
+
+	fs := path.Join(os.Getenv("HOME"), ".docker/machine")
+
+	f := persist.NewFilestore(fs, "", "")
+
+	// list, err := libmachine.API.List(f)
+	machines, err := f.List()
+	if err != nil {
+		fmt.Printf("Error listing machines: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("MACHINES: %v\n", machines)
+
+	for _, machine := range machines {
+		DockerConnect(true, machine)
+		doMach := definitions.NowDo()
+		doMach.All = true
+		if err := ListAll(doMach, "services"); err != nil {
+			return err
+		}
+	}
+	return nil
+}
 
 func ListAll(do *definitions.Do, typ string) (err error) {
 	quiet := do.Quiet

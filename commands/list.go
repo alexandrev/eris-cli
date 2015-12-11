@@ -26,10 +26,13 @@ func ListAllTheThings() {
 	//do.All for known/existing/running
 	do.All = true
 
-	typs := []string{"services", "chains", "actions", "data"}
-	for _, typ := range typs {
-		if err := util.ListAll(do, typ); err != nil {
-			return
-		}
+	/*	typs := []string{"services", "chains", "actions", "data"}
+		for _, typ := range typs {
+			if err := util.ListAll(do, typ); err != nil {
+				return
+			}
+		}*/
+	if err := util.ListMachines(); err != nil {
+		return
 	}
 }
