@@ -12,6 +12,9 @@ import (
 	"strconv"
 	"strings"
 
+	//	"github.com/docker/machine/libmachine"
+	"github.com/docker/machine/libmachine/persist"
+
 	"github.com/eris-ltd/eris-cli/Godeps/_workspace/src/github.com/fsouza/go-dockerclient"
 
 	. "github.com/eris-ltd/eris-cli/Godeps/_workspace/src/github.com/eris-ltd/common/go/common"
@@ -25,6 +28,19 @@ func DockerConnect(verbose bool, machName string) { // TODO: return an error...?
 	var dockerHost string
 	var dockerCertPath string
 	if runtime.GOOS == "linux" {
+		home := os.Getenv("HOME")
+		fs := path.Join(home, ".docker/machine")
+
+		f := persist.NewFilestore(fs, "", "")
+
+		//		list, erro := libmachine.API.List(f)
+		ls, erro := f.List()
+		if erro != nil {
+			fmt.Printf("ERORRRR: %v\n", erro)
+			os.Exit(1)
+		}
+		fmt.Printf("LIST: %v\n", ls)
+
 		// this means we aren't gonna use docker-machine (kind of)
 		if (machName == "eris" || machName == "default") && (os.Getenv("DOCKER_HOST") == "" && os.Getenv("DOCKER_CERT_PATH") == "") {
 			//if os.Getenv("DOCKER_HOST") == "" && os.Getenv("DOCKER_CERT_PATH") == "" {
