@@ -25,17 +25,16 @@ echo.
 docker version
 
 echo.
-echo *** Checking the Eris to Docker connection
+echo *** Checking Eris to Docker connection
 echo.
 eris init -dp --yes
-echo.
-eris version
 echo.
 
 :: Pull images if run without the 'local' parameter.
 if x%1 == xlocal goto nopull
 for /f "tokens=*" %%i in ('eris version --quiet') do set ERIS_VERSION=%%i
-echo ^(ERIS_VERSION=%ERIS_VERSION%^)
+echo.
+echo *** ERIS_VERSION=%ERIS_VERSION%
 echo.
 
 call :pull quay.io/eris/base
@@ -48,7 +47,8 @@ call :pull quay.io/eris/epm:%ERIS_VERSION%
 
 echo.
 echo.
-echo *** Begin testing now
+echo *** Package tests
+echo.
 echo.
 
 set ERIS_PULL_APPROVE=true
@@ -82,24 +82,26 @@ go test -v ./contracts/...
 call :passed Contracts %errorlevel%
 
 echo.
+echo.
 echo *** Congratulations! All Package Level Tests Passed.
 echo.
 echo.
 exit /b
 
 :pull
-echo Pulling image  %1
+echo Pulling image %1
 docker pull %1 >nul:
 goto :eof
 
 :passed
 if %2 equ 0 (
         echo.
-        echo *** Congratulations! ***  %1 Package Level Tests Have Passed
+        echo *** Congratulations! *** %1 Package Level Tests Have Passed
         echo.
 ) else (
         echo.
         echo *** Boo :^( A Package Level Test has failed.
         echo.
+        :: exit 1
 )
 goto :eof
