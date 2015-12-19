@@ -33,9 +33,6 @@ notifications:
 
 
     <{{buildUrl}}|Build {{projectName}} {{buildVersion}} {{status}}> Commit <{{commitUrl}}|{{commitId}}> by {{commitAuthor}} on {{commitDate}}: _{{commitMessage}}_
-  on_build_success: false
-  on_build_failure: false
-  on_build_status_changed: false
 on_finish:
 - cmd: >-
     docker-machine kill eris
