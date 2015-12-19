@@ -28,7 +28,6 @@ echo.
 echo *** Checking Eris to Docker connection
 echo.
 eris init -dp --yes
-echo.
 
 :: Pull images if run without the 'local' parameter.
 if x%1 == xlocal goto nopull
