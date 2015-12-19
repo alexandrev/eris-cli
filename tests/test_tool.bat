@@ -101,6 +101,5 @@ if %2 equ 0 (
         echo.
         echo *** Boo :^( A Package Level Test has failed.
         echo.
-        :: exit 1
 )
 goto :eof
