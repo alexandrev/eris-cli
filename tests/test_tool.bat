@@ -53,6 +53,11 @@ echo.
 set ERIS_PULL_APPROVE=true
 set ERIS_MIGRATE_APPROVE=true
 
+for /f "tokens=*" %%i in ('docker inspect --format="{{.NetworkSettings.IPAddress}}" eris_service_ipfs_1') do set ERIS_IPFS_HOST=http^://%%i
+echo.
+echo *** ERIS_IPFS_HOST=%ERIS_IPFS_HOST%
+echo.
+
 go test -v ./perform/...
 call :passed Perform %errorlevel%
 
