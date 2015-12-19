@@ -20,13 +20,12 @@
 
 echo Hello! The marmots will begin testing now.
 echo.
-echo.
-echo Docker API information
+echo *** Docker API information
 echo.
 docker version
 
 echo.
-echo Checking the Eris to Docker connection
+echo *** Checking the Eris to Docker connection
 echo.
 eris init -dp --yes
 echo.
@@ -36,8 +35,7 @@ echo.
 :: Pull images if run without the 'local' parameter.
 if x%1 == xlocal goto nopull
 for /f "tokens=*" %%i in ('eris version --quiet') do set ERIS_VERSION=%%i
-echo.
-echo ERIS_VERSION=%ERIS_VERSION%
+echo ^(ERIS_VERSION=%ERIS_VERSION%^)
 echo.
 
 call :pull quay.io/eris/base
@@ -48,53 +46,60 @@ call :pull quay.io/eris/erisdb:%ERIS_VERSION%
 call :pull quay.io/eris/epm:%ERIS_VERSION%
 :nopull
 
-:: Actual tests.
+echo.
+echo.
+echo *** Begin testing now
+echo.
+
 set ERIS_PULL_APPROVE=true
 set ERIS_MIGRATE_APPROVE=true
 
-go test ./perform/...
+go test -v ./perform/...
 call :passed Perform %errorlevel%
 
-go test ./util/...
+go test -v ./util/...
 call :passed Util %errorlevel%
 
-go test ./data/...
+go test -v ./data/...
 call :passed Data %errorlevel%
 
-go test ./files/...
+go test -v ./files/...
 call :passed Config %errorlevel%
 
-go test ./keys/...
+go test -v ./keys/...
 call :passed Keys %errorlevel%
 
-go test ./services/...
+go test -v ./services/...
 call :passed Services %errorlevel%
 
-go test ./chains/...
+go test -v ./chains/...
 call :passed Chains %errorlevel%
 
-go test ./actions/...
+go test -v ./actions/...
 call :passed Actions %errorlevel%
 
-go test ./contracts/...
+go test -v ./contracts/...
 call :passed Contracts %errorlevel%
 
 echo.
-echo Congratulations! All Package Level Tests Passed.
+echo *** Congratulations! All Package Level Tests Passed.
+echo.
 echo.
 exit /b
 
-
 :pull
-echo Pulling image =^> %1
+echo Pulling image  %1
 docker pull %1 >nul:
 goto :eof
 
 :passed
 if %2 equ 0 (
+        echo.
         echo *** Congratulations! ***  %1 Package Level Tests Have Passed
+        echo.
 ) else (
-        echo Boo :^( A Package Level Test has failed.
-        exit /b 1
+        echo.
+        echo *** Boo :^( A Package Level Test has failed.
+        echo.
 )
 goto :eof
