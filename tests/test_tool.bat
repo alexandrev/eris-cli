@@ -60,6 +60,15 @@ echo.
 echo *** ERIS_IPFS_HOST=%ERIS_IPFS_HOST%
 echo.
 
+go test -v ./services/...
+call :passed Services %errorlevel%
+
+go test -v ./chains/...
+call :passed Chains %errorlevel%
+
+go test -v ./keys/...
+call :passed Keys %errorlevel%
+
 go test -v ./perform/...
 call :passed Perform %errorlevel%
 
@@ -71,15 +80,6 @@ call :passed Data %errorlevel%
 
 go test -v ./files/...
 call :passed Config %errorlevel%
-
-go test -v ./keys/...
-call :passed Keys %errorlevel%
-
-go test -v ./services/...
-call :passed Services %errorlevel%
-
-go test -v ./chains/...
-call :passed Chains %errorlevel%
 
 go test -v ./actions/...
 call :passed Actions %errorlevel%
