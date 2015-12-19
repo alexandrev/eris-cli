@@ -1504,7 +1504,7 @@ func TestLogsSimple(t *testing.T) {
 		t.Fatalf("expected logs pulled, got %v", err)
 	}
 
-	if !strings.Contains(buf.String(), "Initializing daemon") {
+	if !strings.Contains(buf.String(), "Initializing daemon") && !strings.Contains(buf.String(), "Daemon is ready") {
 		t.Fatalf("expected certain log entries, got %q", buf.String())
 	}
 }
