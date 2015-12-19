@@ -1,3 +1,43 @@
-version: 1.0.{build}-{branch}
-build:
-  verbosity: minimal
+version: 1.0.{build}
+clone_folder: C:\src\github.com\eris-ltd\eris-cli
+environment:
+  GOPATH: C:\
+  GOBIN: C:\bin
+  PATH: '%PATH%;C:\bin'
+build_script:
+- cmd: >-
+    choco install -yr docker docker-machine
+
+    docker-machine create -d digitalocean --digitalocean-size=4gb --digitalocean-access-token=%DIGITALOCEAN_TOKEN% eris
+
+    docker-machine env --shell=cmd eris
+
+    for /f "tokens=*" %%i in ('docker-machine env --shell cmd eris') do %%i
+
+    cd c:\src\github.com\eris-ltd\eris-cli\cmd\eris
+
+    go get
+
+    go install
+test_script:
+- cmd: >-
+    cd c:\src\github.com\eris-ltd\eris-cli
+
+    tests/test_tool.bat
+notifications:
+- provider: Slack
+  incoming_webhook: https://hooks.slack.com/services/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
+  channel: '#eris-cli'
+  template: >-
+    Windows CI Build.
+
+
+    <{{buildUrl}}|Build {{projectName}} {{buildVersion}} {{status}}> Commit <{{commitUrl}}|{{commitId}}> by {{commitAuthor}} on {{commitDate}}: _{{commitMessage}}_
+  on_build_success: false
+  on_build_failure: false
+  on_build_status_changed: false
+on_finish:
+- cmd: >-
+    docker-machine kill eris
+
+    docker-machine rm -f eris
