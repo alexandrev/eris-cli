@@ -1576,7 +1576,7 @@ func TestLogsTail(t *testing.T) {
 		t.Fatalf("expected logs pulled, got %v", err)
 	}
 
-	if !strings.Contains(buf.String(), "Gateway") {
+	if !strings.Contains(buf.String(), "Initializing daemon") {
 		t.Fatalf("expected certain log entries, got %q", buf.String())
 	}
 }
