@@ -142,7 +142,7 @@ passed() {
   then
     echo ""
     echo ""
-    echo "*** Congratulations! $1 Package Level Tests Have Passed on Machine: $machine"
+    echo "*** Congratulations! *** $1 Package Level Tests Have Passed on Machine: $machine"
     echo ""
     echo ""
     return 0

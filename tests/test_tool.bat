@@ -99,7 +99,7 @@ goto :eof
 :passed
 if %2 equ 0 (
         echo.
-        echo *** Congratulations! *** %1 Package Level Tests Have Passed
+        echo *** Congratulations! %1 Package Tests Have Passed
         echo.
 ) else (
         echo.
