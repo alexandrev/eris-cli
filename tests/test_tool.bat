@@ -58,7 +58,7 @@ for /f "tokens=*" %%i in ('docker inspect --format="{{.NetworkSettings.IPAddress
 echo.
 echo ERIS_IPFS_HOST=%ERIS_IPFS_HOST%
 echo.
-eris services stop ipfs
+eris clean
 
 go test -v ./services/...
 call :passed Services %errorlevel%
