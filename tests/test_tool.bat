@@ -33,9 +33,11 @@ eris init -dp --yes
 if x%1 == xlocal goto nopull
 for /f "tokens=*" %%i in ('eris version --quiet') do set ERIS_VERSION=%%i
 echo.
-echo *** ERIS_VERSION=%ERIS_VERSION%
+echo *** Pulling images
 echo.
 
+echo ERIS_VERSION=%ERIS_VERSION%
+echo.
 call :pull quay.io/eris/base
 call :pull quay.io/eris/data
 call :pull quay.io/eris/ipfs
