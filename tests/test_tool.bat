@@ -54,11 +54,11 @@ set ERIS_PULL_APPROVE=true
 set ERIS_MIGRATE_APPROVE=true
 
 eris services start ipfs
-
 for /f "tokens=*" %%i in ('docker inspect --format="{{.NetworkSettings.IPAddress}}" eris_service_ipfs_1') do set ERIS_IPFS_HOST=http^://%%i
 echo.
-echo *** ERIS_IPFS_HOST=%ERIS_IPFS_HOST%
+echo ERIS_IPFS_HOST=%ERIS_IPFS_HOST%
 echo.
+eris services stop ipfs
 
 go test -v ./services/...
 call :passed Services %errorlevel%
