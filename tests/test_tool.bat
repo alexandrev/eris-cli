@@ -45,9 +45,7 @@ call :pull quay.io/eris/epm:%ERIS_VERSION%
 :nopull
 
 echo.
-echo.
 echo *** Package tests
-echo.
 echo.
 
 set ERIS_PULL_APPROVE=true
@@ -55,7 +53,6 @@ set ERIS_MIGRATE_APPROVE=true
 
 eris services start ipfs
 for /f "tokens=*" %%i in ('docker inspect --format="{{.NetworkSettings.IPAddress}}" eris_service_ipfs_1') do set ERIS_IPFS_HOST=http^://%%i
-echo.
 echo ERIS_IPFS_HOST=%ERIS_IPFS_HOST%
 echo.
 eris clean
@@ -88,11 +85,9 @@ go test -v ./contracts/...
 call :passed Contracts %errorlevel%
 
 echo.
-echo.
 echo *** Congratulations! All Package Level Tests Passed.
 echo.
-echo.
-exit /b
+exit 
 
 :pull
 echo Pulling image %1
