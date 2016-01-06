@@ -15,7 +15,7 @@ import (
 func Initialize(do *definitions.Do) error {
 
 	log.Warn("Checking for Eris Root Directory")
-	newDir, err := checkThenInitErisRoot()
+	newDir, err := checkThenInitErisRoot(do.Quiet)
 	if err != nil {
 		return err
 	}
@@ -60,15 +60,9 @@ func InitDefaults(do *definitions.Do, newDir bool) error {
 	var actPath string
 	var chnPath string
 
-	/*if do.Quiet {
-		srvPath = "/tmp/eris/services"
-		actPath = "/tmp/eris/actions"
-		chnPath = "/tmp/eris/chains"
-	} else {*/
 	srvPath = common.ServicesPath
 	actPath = common.ActionsPath
 	chnPath = common.ChainsPath
-	//	}
 
 	if askToPull(do.Yes, "services") {
 		if err := dropServiceDefaults(srvPath, do.Source); err != nil {
@@ -93,8 +87,14 @@ func InitDefaults(do *definitions.Do, newDir bool) error {
 	return nil
 }
 
-func checkThenInitErisRoot() (bool, error) {
+func checkThenInitErisRoot(force bool) (bool, error) {
 	var newDir bool
+	if force { //for testing only
+		log.Warn("Force Initializing Eris Root Directory")
+		if err := common.InitErisDir(); err != nil {
+			return true, fmt.Errorf("Error:\tcould not Initialize the Eris Root Directory.\n%s\n", err)
+		}
+	}
 	if !util.DoesDirExist(common.ErisRoot) {
 		log.Warn("Eris Root Directory does not exist. The marmots will initialize this directory for you.")
 		if err := common.InitErisDir(); err != nil {

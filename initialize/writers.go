@@ -182,17 +182,10 @@ func drops(files []string, typ, dir, from string) error {
 	return nil
 }
 
-//XXX legacy - keep around for good measure :~)
-//func dropChainDefaults(dir, from string) error {
-//	defChainDir := filepath.Join(common.ChainsPath, "default")
-//	return nil
-//}
-
 func writeDefaultFile(savePath, fileName string, toWrite func() string) error {
 	if err := os.MkdirAll(savePath, 0777); err != nil {
 		return err
 	}
-	log.WithField(savePath, fileName).Warn("THIS IS WHERE THEY GO")
 	writer, err := os.Create(filepath.Join(savePath, fileName))
 	defer writer.Close()
 	if err != nil {

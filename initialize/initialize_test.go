@@ -46,7 +46,7 @@ func TestMain(m *testing.M) {
 func TestInitErisRootDir(t *testing.T) {
 	//will this overwrite my current eris ?
 	//thats the point of the next test/flag
-	_, err := checkThenInitErisRoot()
+	_, err := checkThenInitErisRoot(false)
 	if err != nil {
 		ifExit(err)
 	}

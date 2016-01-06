@@ -104,7 +104,7 @@ setup_machine() {
   
   if [[ $machine != "eris-test-local" ]]
   then
-    eris init --yes --pull-images=true
+    eris init --yes --pull-images=true --testing=true
     echo
     eris_version=$(eris version --quiet)
     #pull_images
