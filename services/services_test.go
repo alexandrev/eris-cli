@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	def "github.com/eris-ltd/eris-cli/definitions"
-	//ini "github.com/eris-ltd/eris-cli/initialize"
 	"github.com/eris-ltd/eris-cli/loaders"
 	"github.com/eris-ltd/eris-cli/logger"
 	tests "github.com/eris-ltd/eris-cli/testutils"

@@ -4,16 +4,15 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	//"os/exec"
 	"path"
 	"testing"
 
 	"github.com/eris-ltd/eris-cli/config"
-	//def "github.com/eris-ltd/eris-cli/definitions"
+	"github.com/eris-ltd/eris-cli/logger"
 	"github.com/eris-ltd/eris-cli/util"
 
+	log "github.com/eris-ltd/eris-cli/Godeps/_workspace/src/github.com/Sirupsen/logrus"
 	"github.com/eris-ltd/eris-cli/Godeps/_workspace/src/github.com/eris-ltd/common/go/common"
-	"github.com/eris-ltd/eris-cli/Godeps/_workspace/src/github.com/eris-ltd/common/go/log"
 )
 
 //XXX can't dry because testutils imports this package
@@ -25,19 +24,18 @@ var chnDir = path.Join(erisDir, "chains")
 var chnDefDir = path.Join(chnDir, "default")
 
 func TestMain(m *testing.M) {
-	var logLevel log.LogLevel
 
-	logLevel = 0
-	// logLevel = 1
-	// logLevel = 3
+	log.SetFormatter(logger.ErisFormatter{})
 
-	log.SetLoggers(logLevel, os.Stdout, os.Stderr)
+	log.SetLevel(log.ErrorLevel)
+	// log.SetLevel(log.InfoLevel)
+	// log.SetLevel(log.DebugLevel)
 
 	ifExit(testsInit())
 
 	exitCode := m.Run()
 
-	logger.Infoln("Commensing with Tests Tear Down.")
+	log.Info("Commensing with Tests Tear Down.")
 	if os.Getenv("TEST_IN_CIRCLE") != "true" {
 		ifExit(testsTearDown())
 	}
@@ -166,7 +164,7 @@ func testsInit() error {
 
 	util.DockerConnect(false, "eris")
 
-	logger.Infoln("Test init completed. Starting main test sequence now.")
+	log.Info("Test init completed. Starting main test sequence now.")
 	return nil
 
 }
@@ -195,11 +193,11 @@ func testsTearDown() error {
 //copied from testutils
 func ifExit(err error) {
 	if err != nil {
-		logger.Errorln(err)
+		log.Error(err)
 		if err := testsTearDown(); err != nil {
-			logger.Errorln(err)
+			log.Error(err)
 		}
-		log.Flush()
+		//	log.Flush()
 		os.Exit(1)
 	}
 }

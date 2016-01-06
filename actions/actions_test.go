@@ -1,7 +1,7 @@
 package actions
 
 import (
-	"fmt"
+	//	"fmt"
 	"os"
 	"strings"
 	"testing"
@@ -9,7 +9,7 @@ import (
 	"github.com/eris-ltd/eris-cli/definitions"
 	"github.com/eris-ltd/eris-cli/logger"
 	tests "github.com/eris-ltd/eris-cli/testutils"
-	"github.com/eris-ltd/eris-cli/util"
+	//	"github.com/eris-ltd/eris-cli/util"
 
 	log "github.com/eris-ltd/eris-cli/Godeps/_workspace/src/github.com/Sirupsen/logrus"
 )
@@ -22,9 +22,9 @@ var hash string
 func TestMain(m *testing.M) {
 	log.SetFormatter(logger.ErisFormatter{})
 
-	log.SetLevel(log.ErrorLevel)
+	//log.SetLevel(log.ErrorLevel)
 	// log.SetLevel(log.InfoLevel)
-	// log.SetLevel(log.DebugLevel)
+	log.SetLevel(log.DebugLevel)
 
 	tests.IfExit(testsInit())
 
@@ -38,7 +38,7 @@ func TestMain(m *testing.M) {
 	os.Exit(exitCode)
 }
 
-func TestListActions(t *testing.T) {
+/*func TestListActions(t *testing.T) {
 	do := definitions.NowDo()
 	do.Known = true
 	do.Running = false
@@ -54,7 +54,7 @@ func TestListActions(t *testing.T) {
 	if k[0] != "do_not_use" {
 		tests.IfExit(fmt.Errorf("Could not find \"do not use\" action definition.\n"))
 	}
-}
+}*/
 
 func TestLoadActionDefinition(t *testing.T) {
 	var e error

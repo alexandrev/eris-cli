@@ -34,6 +34,10 @@ func DefChainConfig() string {
 # This is a TOML config file.
 # For more information, see https://github.com/toml-lang/toml
 
+# It is used to initialize a new eris:db node.
+# For more info about the various options, 
+# see https://github.com/eris-ltd/mint-client (mintgen).
+
 moniker = "defaulttester.com"
 seeds = ""
 fast_sync = false

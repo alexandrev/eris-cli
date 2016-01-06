@@ -199,10 +199,10 @@ packagesToTest() {
   # cd services && go test && cd .. # switch to me if needing to debug
   passed Services
   if [ $? -ne 0 ]; then return 1; fi
-  go test ./chains/... # switch FROM me if needing to debug
+#  go test ./chains/... # switch FROM me if needing to debug
   # cd chains && go test && cd .. # switch TO me if needing to debug
-  passed Chains
-  if [ $? -ne 0 ]; then return 1; fi
+#  passed Chains
+ # if [ $? -ne 0 ]; then return 1; fi
   go test ./actions/...
   passed Actions
   if [ $? -ne 0 ]; then return 1; fi

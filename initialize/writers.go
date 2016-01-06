@@ -19,7 +19,7 @@ import (
 )
 
 //TODO hard code in /common
-var defChainDir = path.Join(common.ChainsPath, "default")
+//var defChainDir = path.Join(common.ChainsPath, "default")
 
 func dropServiceDefaults(dir, from string) error {
 	servDefs := []string{
@@ -49,10 +49,14 @@ func dropActionDefaults(dir, from string) error {
 	if err := drops(actDefs, "actions", dir, from); err != nil {
 		return err
 	}
+	if err := writeDefaultFile(common.ActionsPath, "do_not_use.toml", defAct); err != nil {
+		return fmt.Errorf("Cannot add default genesis.json: %s.\n", err)
+	}
 	return nil
 }
 
 func dropChainDefaults(dir, from string) error {
+	var defChainDir = path.Join(common.ChainsPath, "default")
 	if err := os.MkdirAll(defChainDir, 0777); err != nil {
 		return err
 	}
@@ -114,7 +118,7 @@ func pullDefaultImages() error {
 		"quay.io/eris/epm",
 	}
 
-	logger.Println("Pulling default docker images from quay.io")
+	log.Warn("Pulling default docker images from quay.io")
 	for _, image := range images {
 		var tag string
 		if image == "eris/erisdb" || image == "eris/epm" {
@@ -157,14 +161,14 @@ func drops(files []string, typ, dir, from string) error {
 	if from == "toadserver" {
 		for _, file := range files {
 			url := fmt.Sprintf("%s:11113/getfile/%s", ipfs.SexyUrl(), file)
-			logger.Debugf("Getting %s from:\t%s\n", file, url)
+			log.WithField(file, url).Debug("Getting %s from:\t%s\n")
 			if err := ipfs.DownloadFromUrlToFile(url, file, dir, buf); err != nil {
 				return err
 			}
 		}
 	} else if from == "rawgit" {
 		for _, file := range files {
-			logger.Debugf("Getting %s from: GitHub\n", file)
+			log.WithField("=>", file).Debug("Getting %s from: GitHub.")
 			//TODO deduplicate that dum file
 			if err := util.GetFromGithub("eris-ltd", repo, "master", file, dir, file, buf); err != nil {
 				return err
@@ -184,6 +188,7 @@ func writeDefaultFile(savePath, fileName string, toWrite func() string) error {
 	if err := os.MkdirAll(savePath, 0777); err != nil {
 		return err
 	}
+	log.WithField(savePath, fileName).Warn("THIS IS WHERE THEY GO")
 	writer, err := os.Create(filepath.Join(savePath, fileName))
 	defer writer.Close()
 	if err != nil {

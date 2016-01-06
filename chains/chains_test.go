@@ -36,7 +36,7 @@ func TestMain(m *testing.M) {
 
 	log.SetLevel(log.ErrorLevel)
 	// log.SetLevel(log.InfoLevel)
-	// log.SetLevel(log.DebugLevel)
+	//log.SetLevel(log.DebugLevel)
 
 	tests.IfExit(tests.TestsInit("chain"))
 	log.Info("Test init completed. Starting main test sequence now")
