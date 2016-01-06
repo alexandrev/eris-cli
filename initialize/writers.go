@@ -132,6 +132,10 @@ func pullDefaultImages() error {
 			Tag:          tag,
 			OutputStream: os.Stdout,
 		}
+		if os.Getenv("ERIS_PULL_APPROVE") == "true" {
+			opts.OutputStream = nil
+		}
+
 		auth := docker.AuthConfiguration{}
 
 		if err := util.DockerClient.PullImage(opts, auth); err != nil {
