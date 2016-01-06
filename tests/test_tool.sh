@@ -100,6 +100,8 @@ connect() {
 }
 
 setup_machine() {
+  export ERIS_PULL_APPROVE="true" #because init now pulls images
+  
   if [[ $machine != "eris-test-local" ]]
   then
     eris init --yes --pull-images=true
