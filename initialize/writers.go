@@ -18,9 +18,6 @@ import (
 	"github.com/eris-ltd/eris-cli/Godeps/_workspace/src/github.com/fsouza/go-dockerclient"
 )
 
-//TODO hard code in /common
-//var defChainDir = path.Join(common.ChainsPath, "default")
-
 func dropServiceDefaults(dir, from string) error {
 	servDefs := []string{
 		"btcd.toml",
@@ -56,8 +53,7 @@ func dropActionDefaults(dir, from string) error {
 }
 
 func dropChainDefaults(dir, from string) error {
-	var defChainDir = path.Join(common.ChainsPath, "default")
-	if err := os.MkdirAll(defChainDir, 0777); err != nil {
+	if err := os.MkdirAll(common.DefaultChainDir, 0777); err != nil {
 		return err
 	}
 
@@ -69,13 +65,13 @@ func dropChainDefaults(dir, from string) error {
 	if err := drops(chnDefs, "chains", dir, from); err != nil {
 		return err
 	}
-	if err := writeDefaultFile(defChainDir, "genesis.json", DefChainGen); err != nil {
+	if err := writeDefaultFile(common.DefaultChainDir, "genesis.json", DefChainGen); err != nil {
 		return fmt.Errorf("Cannot add default genesis.json: %s.\n", err)
 	}
-	if err := writeDefaultFile(defChainDir, "priv_validator.json", DefChainKeys); err != nil {
+	if err := writeDefaultFile(common.DefaultChainDir, "priv_validator.json", DefChainKeys); err != nil {
 		return fmt.Errorf("Cannot add default priv_validator.json: %s.\n", err)
 	}
-	if err := writeDefaultFile(defChainDir, "genesis.csv", DefChainCSV); err != nil {
+	if err := writeDefaultFile(common.DefaultChainDir, "genesis.csv", DefChainCSV); err != nil {
 		return fmt.Errorf("Cannot add default genesis.csv: %s.\n", err)
 	}
 
@@ -95,13 +91,13 @@ func dropChainDefaults(dir, from string) error {
 
 	//move things to where they ought to be
 	config := path.Join(dir, "config.toml")
-	configDef := path.Join(defChainDir, "config.toml")
+	configDef := path.Join(common.DefaultChainDir, "config.toml")
 	if err := os.Rename(config, configDef); err != nil {
 		return err
 	}
 
 	server := path.Join(dir, "server_conf.toml")
-	serverDef := path.Join(defChainDir, "server_conf.toml")
+	serverDef := path.Join(common.DefaultChainDir, "server_conf.toml")
 	if err := os.Rename(server, serverDef); err != nil {
 		return err
 	}
